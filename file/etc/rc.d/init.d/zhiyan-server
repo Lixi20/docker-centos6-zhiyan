@@ -1,0 +1,48 @@
+#!/bin/bash
+#chkconfig: 2345 90 01
+#description:zhiyan-server
+
+PID=$(ps -ef | grep "zhiyan-server" | grep "module/bin" | grep -v grep | awk '{print $2}')
+ProcNumber=$(ps -ef | grep -w zhiyan-server |grep "module/bin" | grep -v grep| wc -l)
+
+start() {
+    echo "Starting ZhiYan-Server..."
+    nohup /data/zhiyan/module/bin/zhiyan-server -c /data/zhiyan/module/conf/server.conf -l /data/zhiyan/module/conf/server.log.yaml >>/var/log/zhiyan/zhiyan-server/error.log 2>&1 &
+    echo $PID >/var/run/zhiyan-server.pid
+}
+
+stop() {
+    echo "Shutting down ZhiYan-Server..."
+    kill -9 $PID
+    rm -rf /var/run/zhiyan-server.pid
+}
+
+status() {
+        if [ $ProcNumber == 0 ];
+        then
+           echo "ZhiYan-Server is Faild"
+        else
+           echo "ZhiYan-Server (pid  $PID) is running..."
+        fi 
+}
+
+case "$1" in
+start)
+    start
+    ;;
+stop)
+    stop
+    ;;
+status)
+    status
+    ;;
+restart)
+    echo "Restarting ZhiYan-Server "
+    stop
+    start
+    ;;
+*)
+    echo "Usage:service ZhiYan-Server{start|stop|restart|status}"
+    exit 2
+    ;;
+esac

@@ -1,0 +1,12 @@
+[workspace]
+
+members = [
+    "zhiyan-server"
+]
+
+exclude = [
+    "libzygrpc"
+]
+
+[patch.crates-io]
+libzygrpc = { path = "/tmp/libzygrpc/rust"}

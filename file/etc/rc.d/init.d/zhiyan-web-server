@@ -1,0 +1,50 @@
+#!/bin/bash
+#chkconfig: 2345 90 01
+#description:zhiyan-web-server
+
+CONFIG_FILE=/data/zhiyan/zhiyan-web-server/application.properties
+JAR_FILE=/data/zhiyan/zhiyan-web-server/lastest.jar
+PID=$(ps -ef | grep "zhiyan-web-server" | grep 'jdk-11' | grep -v grep | awk '{print $2}')
+ProcNumber=$(ps -ef |grep -w zhiyan-web-server|grep 'jdk-11'|grep -v grep|wc -l)
+
+start() {
+    echo "Starting ZhiYan-Web-Server... "
+    nohup /usr/local/jdk-11/bin/java -Dspring.config.location=$CONFIG_FILE -jar $JAR_FILE >> /var/log/zhiyan/zhiyan-web-server/error.log 2>&1 &
+    echo $PID >/var/run/zhiyan-web-server.pid
+}
+
+stop() {
+    echo "Shutting down ZhiYan-Web-Server... "
+    kill -9 $PID 
+    rm -rf /var/run/zhiyan-web-server.pid
+    }
+
+status() {
+        if [ $ProcNumber == 0 ];
+        then
+           echo "ZhiYan-Web-Server is Faild"
+        else
+           echo "ZhiYan-Web-Server (pid  $PID) is running..."
+        fi 
+}
+
+case "$1" in
+start)
+    start
+    ;;
+stop)
+    stop
+    ;;
+status)
+    status
+    ;;
+restart)
+    echo "Restarting ZhiYan-Web-Server "
+    stop
+    start
+    ;;
+*)
+    echo "Usage:service ZhiYan-Web-Server{start|stop|restart|status}"
+    exit 2
+    ;;
+esac
