@@ -205,8 +205,8 @@ zhiyan-server本地文件：
 如果在docker容器里面使用 cargo build 或者 cargo build --release 出现慢、失败的情况，请将Cargo换源。
 
 本地源文件：
-
-   file/cargo/config
+    
+    file/cargo/config
 
 容器源文件：
 
