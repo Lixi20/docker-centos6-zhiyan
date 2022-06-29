@@ -39,7 +39,7 @@ RUN sed -i "s/#ClientAliveInterval 0/ClientAliveInterval 30/" /etc/ssh/sshd_conf
 RUN sed -i "s/#ClientAliveCountMax 3/ClientAliveCountMax 10/" /etc/ssh/sshd_config
 
 ############################
-# 2. 安装JAVA和Maven
+# 2. 安装JAVA和Maven 
 ############################
 RUN wget https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_linux-x64_bin.tar.gz
 RUN tar -zxvf openjdk-11+28_linux-x64_bin.tar.gz
