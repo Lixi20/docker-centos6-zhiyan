@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package zhiyan_rpc;
+
+service ZhiYanService {
+  rpc zymod (ZhiYanRequest) returns (ZhiYanResponse) {}
+  rpc zyregistermod (ZhiYanRegisterModuleRequest) returns (ZhiYanRegisterModuleResponse) {}
+}
+
+message ZhiYanRequest {
+  string name = 1;
+  string host = 2;
+  string datetime = 3;
+  string content = 4;
+  string kernel_version = 5;
+}
+
+message ZhiYanResponse {
+  string code = 1;
+  string message = 2;
+}
+
+message ZhiYanRegisterModuleRequest {
+  string name = 1;
+  string content = 2;
+  string token = 3;
+  string host = 4;
+  string config = 5;
+  string kernel_version = 6;
+}
+
+message ZhiYanRegisterModuleResponse {
+  string code = 1;
+  string message = 2;
+}

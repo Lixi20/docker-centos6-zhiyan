@@ -1,0 +1,17 @@
+refresh_rate: 30 seconds
+appenders:
+  stdout:
+    kind: console
+    encoder:
+      pattern: "{d(%Y-%m-%d %H:%M:%S)} {P} [{l}] {m}{n}"
+  file:
+    kind: file
+    path: "/var/log/zhiyan/zhiyan-server/error.log"
+    encoder:
+      pattern: "{d(%Y-%m-%d %H:%M:%S)} {P} [{l}] {m}{n}"
+root:
+  level: error
+  appenders:
+    - stdout
+    - file
+

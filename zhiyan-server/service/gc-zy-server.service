@@ -1,0 +1,13 @@
+[Unit]
+Description=GeekCamp ZhiYan Server
+After=network-online.target remote-fs.target nss-lookup.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/data/zhiyan/zhiyan-server/zhiyan-server -c /data/zhiyan/zhiyan-server/server.conf  -l /data/zhiyan/zhiyan-server/server.log.yaml
+StandardOutput=null
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

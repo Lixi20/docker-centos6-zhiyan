@@ -1,0 +1,16 @@
+[Unit]
+Description=GeekCamp ZhiYan Web Server
+After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=simple
+Environment="CONFIG_FILE=/data/zhiyan/zhiyan-web-server/application.properties"
+Environment="JAR_FILE=/data/zhiyan/zhiyan-web-server/lastest.jar"
+WorkingDirectory=/data/zhiyan/zhiyan-web-server
+ExecStart=/usr/bin/java -Dspring.config.location=${CONFIG_FILE} -jar ${JAR_FILE}
+SuccessExitStatus=143
+StandardOutput=null
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

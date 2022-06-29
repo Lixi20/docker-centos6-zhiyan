@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# gc-zy-web-server        ZhiYan Web Server
+#
+# chkconfig: - 85 15
+. /etc/rc.d/init.d/functions
+
+run_as_user='zhiyan'
+name='gc-zy-web-server'
+sppm_cli_path='/usr/local/python3/bin/sppm_cli '
+conffile=${CONFFILE:-/data/zhiyan/zhiyan-web-server/application.properties}
+prog=${PROGR:-lastest.jar}
+program_path=${PROGRAM_PATH:-/data/zhiyan/zhiyan-web-server/${prog}}
+java=${GC_ZY_WEB_SERVER_EXECUTOR:-/usr/bin/java}
+lockfile=${LOCKFILE:-/var/lock/subsys/${name}}
+pidfile=${PIDFILE:-/var/run/${name}.pid}
+RETVAL=0
+
+
+start() {
+    echo -n $"Starting $prog: "
+
+    ${sppm_cli_path} --name ${name} --user ${run_as_user} --start "ulimit -S -c 0 >/dev/null 2>&1 ;${java} -Dspring.config.location=${conffile} -jar ${program_path}" > /dev/null && echo OK
+
+    RETVAL=$?
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    ${sppm_cli_path} --name ${name} --stop > /dev/null && echo OK
+    RETVAL=$?
+}
+
+rh_status() {
+    bin=$(head -n 1 ${sppm_cli_path}|sed 's/#!//')
+    status -p ${pidfile} -b ${bin} ${program_path}
+}
+
+# See how we were called.
+case "$1" in
+    start)
+        rh_status >/dev/null 2>&1 && exit 0
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        rh_status
+        RETVAL=$?
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo $"Usage: $prog {start|stop|restart|status|help}"
+        RETVAL=2
+esac
+
+exit $RETVAL
+
