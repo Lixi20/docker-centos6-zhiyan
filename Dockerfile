@@ -32,7 +32,7 @@ RUN echo SELINUXTYPE=targeted>>/etc/selinux/config
 RUN echo "*               soft   nofile            65535" >> /etc/security/limits.conf
 RUN echo "*               hard   nofile            65535" >> /etc/security/limits.conf
 RUN sed -i "s/#UseDNS yes/UseDNS no/" /etc/ssh/sshd_config
-RUN sed -i "s/GSSAPIAuthentication yes/GSSAPIAuthentication no/" /etc/ssh/sshd_config
+RUN sed -i "s/latest yes/GSSAPIAuthentication no/" /etc/ssh/sshd_config
 RUN sed -i "s/GSSAPICleanupCredentials yes/GSSAPICleanupCredentials no/" /etc/ssh/sshd_config
 RUN sed -i "s/#MaxAuthTries 6/MaxAuthTries 10/" /etc/ssh/sshd_config
 RUN sed -i "s/#ClientAliveInterval 0/ClientAliveInterval 30/" /etc/ssh/sshd_config
@@ -123,8 +123,8 @@ RUN chown -R zhiyan:zhiyan /var/lib/zhiyan /var/log/zhiyan
 # 9. 安装zhiyan-server
 ############################
 COPY zhiyan-server/ zhiyan-server/
-COPY zhiyan-server/conf/server.conf /data/zhiyan/module/conf/server.conf
-COPY zhiyan-server/conf/server.log.yaml /data/zhiyan/module/conf/server.log.yaml
+COPY zhiyan-server/conf/server.conf.sample /data/zhiyan/module/conf/server.conf
+COPY zhiyan-server/conf/server.log.yaml.sample /data/zhiyan/module/conf/server.log.yaml
 COPY /file/etc/rc.d/init.d/zhiyan-server /etc/rc.d/init.d/zhiyan-server
 RUN chmod 755 /etc/rc.d/init.d//zhiyan-server
 
@@ -146,8 +146,8 @@ COPY Cargo.toml Cargo.toml
 ############################
 COPY zhiyan-web-server/ zhiyan-web-server/
 RUN mvn -f zhiyan-web-server/ clean package
-COPY zhiyan-web-server/src/main/resources/application.properties /data/zhiyan/zhiyan-web-server/application.properties
-COPY zhiyan-web-server/src/main/resources/logback.xml /data/zhiyan/zhiyan-web-server/logback.xml
+COPY zhiyan-web-server/src/main/resources/application.properties.sample /data/zhiyan/zhiyan-web-server/application.properties
+COPY zhiyan-web-server/src/main/resources/logback.xml.sample /data/zhiyan/zhiyan-web-server/logback.xml
 COPY /file/etc/rc.d/init.d/zhiyan-web-server /etc/rc.d/init.d/zhiyan-web-server
 RUN chmod 755 /etc/rc.d/init.d/zhiyan-web-server
 
